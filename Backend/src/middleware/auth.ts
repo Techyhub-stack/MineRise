@@ -24,9 +24,9 @@ export function authMiddleware(
 
   try {
     const decoded = jwt.verify(
-      token,
-      "SUPER_SECRET_KEY"
-    ) as JwtPayload;
+  token,
+  process.env.JWT_SECRET as string
+) as JwtPayload;
 
     req.userId = decoded.userId;
     next();
