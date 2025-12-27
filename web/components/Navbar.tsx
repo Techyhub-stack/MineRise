@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -27,10 +28,18 @@ export default function Navbar() {
           : "none",
       }}
     >
-      {/* LOGO */}
-      <div style={logo} onClick={() => router.push("/")}>
-        <span style={logoRed}>Mine</span>
-        <span style={logoGreen}>Rise</span>
+      {/* LOGO IMAGE */}
+      <div style={logoWrap} onClick={() => router.push("/")}>
+        <Image
+          src="/logo/logo.png"
+          alt="MineRise Logo"
+          width={44}
+          height={44}
+          priority
+          style={{
+            filter: "drop-shadow(0 0 14px rgba(177,18,18,0.7))",
+          }}
+        />
       </div>
 
       {/* LINKS */}
@@ -89,28 +98,16 @@ const nav = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "16px 48px",
+  padding: "14px 48px",
   backdropFilter: "blur(14px)",
   borderBottom: "1px solid rgba(255,255,255,0.05)",
   transition: "all 0.3s ease",
 };
 
-const logo = {
-  fontSize: 24,
-  fontWeight: 900,
+const logoWrap = {
+  display: "flex",
+  alignItems: "center",
   cursor: "pointer",
-  letterSpacing: "0.5px",
-};
-
-const logoRed = {
-  color: "#b11212",
-  textShadow: "0 0 12px rgba(177,18,18,0.6)",
-};
-
-const logoGreen = {
-  color: "#22c55e",
-  marginLeft: 2,
-  textShadow: "0 0 12px rgba(34,197,94,0.6)",
 };
 
 const links = {
@@ -132,8 +129,7 @@ const underline = {
   bottom: -4,
   width: "100%",
   height: 2,
-  background:
-    "linear-gradient(90deg,#b11212,#22c55e)",
+  background: "linear-gradient(90deg,#b11212,#22c55e)",
   transformOrigin: "left",
   transition: "all 0.25s ease",
 };
