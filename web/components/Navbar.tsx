@@ -9,6 +9,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -28,8 +29,13 @@ export default function Navbar() {
           : "none",
       }}
     >
-      {/* LOGO IMAGE */}
-      <div style={logoWrap} onClick={() => router.push("/")}>
+      {/* LOGO */}
+      <div
+        style={logoWrap}
+        onClick={() => router.push("/")}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
         <Image
           src="/logo/logo.png"
           alt="MineRise Logo"
@@ -37,7 +43,10 @@ export default function Navbar() {
           height={44}
           priority
           style={{
-            filter: "drop-shadow(0 0 14px rgba(177,18,18,0.7))",
+            transition: "filter 0.3s ease",
+            filter: hover
+              ? "drop-shadow(0 0 22px rgba(177,18,18,0.9))"
+              : "drop-shadow(0 0 14px rgba(177,18,18,0.7))",
           }}
         />
       </div>
