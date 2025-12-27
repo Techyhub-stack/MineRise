@@ -26,19 +26,17 @@ body {
 }
 
 * {
-  -webkit-user-select: none; /* Chrome, Safari */
-  -ms-user-select: none;     /* IE/Edge */
-  user-select: none;         /* Standard */
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
-
-input,
-textarea {
-  -webkit-user-select: text;
-  -ms-user-select: text;
+input, textarea {
   user-select: text;
 }
+
 img {
   pointer-events: none;
   -webkit-user-drag: none;
 }
+
