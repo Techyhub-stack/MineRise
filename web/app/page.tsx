@@ -1,109 +1,120 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
+const slides = [
+  { title: "Ranks", desc: "Permanent rank with perks" },
+  { title: "Gems", desc: "In-game currency packs" },
+  { title: "Bundles", desc: "Best value packages" },
+];
+
 export default function Home() {
+  const [index, setIndex] = useState(1);
+
+  function prev() {
+    setIndex((i) => (i === 0 ? slides.length - 1 : i - 1));
+  }
+
+  function next() {
+    setIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
+  }
+
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background:
-          "radial-gradient(circle at top, #3b0764, #0f0f12 60%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div style={{ maxWidth: 1100, width: "100%", padding: 40 }}>
-        {/* HERO TEXT */}
-        <div style={{ textAlign: "center", marginBottom: 60 }}>
-          <h1 style={{ fontSize: 56, marginBottom: 10 }}>
-            MineRise Store
-          </h1>
-          <p style={{ fontSize: 18, opacity: 0.8 }}>
-            Premium ranks, gems & perks for our Minecraft server
-          </p>
+    <main style={bg}>
+      <header style={header}>
+        <Link href="/products" style={cta}>View Store</Link>
+      </header>
 
-          <div style={{ marginTop: 30 }}>
-            <Link href="/products">
-              <button style={primaryBtn}>View Store</button>
-            </Link>
-            <Link href="/login">
-              <button style={secondaryBtn}>Login</button>
-            </Link>
-          </div>
+      <div style={carousel}>
+        <button onClick={prev} style={arrow}>‹</button>
+
+        <div style={track}>
+          {slides.map((s, i) => {
+            const offset = i - index;
+            return (
+              <div
+                key={i}
+                style={{
+                  ...card,
+                  transform: `
+                    translateX(${offset * 260}px)
+                    scale(${i === index ? 1.1 : 0.9})
+                    rotateY(${offset * -25}deg)
+                  `,
+                  opacity: Math.abs(offset) > 2 ? 0 : 1,
+                  zIndex: i === index ? 2 : 1,
+                  boxShadow:
+                    i === index
+                      ? "0 0 50px rgba(168,85,247,0.6)"
+                      : "0 20px 40px rgba(0,0,0,0.6)",
+                }}
+              >
+                <h2>{s.title}</h2>
+                <p>{s.desc}</p>
+              </div>
+            );
+          })}
         </div>
 
-        {/* CARD SECTION */}
-        <div
-          style={{
-            display: "flex",
-            gap: 30,
-            justifyContent: "center",
-            perspective: 1200,
-          }}
-        >
-          <Card title="VIP Rank" text="Permanent access & perks" />
-          <Card title="Gems" text="Buy in-game currency" active />
-          <Card title="Bundles" text="Best value packs" />
-        </div>
+        <button onClick={next} style={arrow}>›</button>
       </div>
     </main>
   );
 }
-
-/* Copy paste these to make more i think so */
-
-function Card({
-  title,
-  text,
-  active,
-}: {
-  title: string;
-  text: string;
-  active?: boolean;
-}) {
-  return (
-    <div
-      style={{
-        width: 260,
-        height: 340,
-        background: "#16161d",
-        borderRadius: 16,
-        padding: 24,
-        transform: active
-          ? "scale(1.05)"
-          : "rotateY(15deg)",
-        boxShadow: active
-          ? "0 0 40px rgba(139,92,246,0.6)"
-          : "0 20px 40px rgba(0,0,0,0.6)",
-        border: "1px solid #222",
-        transition: "0.3s ease",
-      }}
-    >
-      <h3 style={{ fontSize: 22 }}>{title}</h3>
-      <p style={{ opacity: 0.8 }}>{text}</p>
-    </div>
-  );
-}
-
-/*Bro these are the Buttons*/
-
-const primaryBtn = {
-  background: "linear-gradient(90deg,#9333ea,#ec4899)",
-  border: "none",
-  padding: "12px 20px",
-  borderRadius: 8,
+const bg = {
+  minHeight: "100vh",
+  background:
+    "radial-gradient(circle at top, #5b0f9b, #0b0b12 65%)",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
   color: "white",
-  fontSize: 16,
-  cursor: "pointer",
-  marginRight: 12,
 };
 
-const secondaryBtn = {
-  background: "transparent",
-  border: "1px solid #444",
-  padding: "12px 20px",
+const header = {
+  position: "absolute" as const,
+  top: 30,
+};
+
+const cta = {
+  background: "linear-gradient(90deg,#9333ea,#ec4899)",
+  padding: "12px 22px",
   borderRadius: 8,
   color: "white",
-  fontSize: 16,
+  textDecoration: "none",
+  fontWeight: 600,
+};
+
+const carousel = {
+  display: "flex",
+  alignItems: "center",
+  gap: 40,
+};
+
+const track = {
+  position: "relative" as const,
+  width: 260,
+  height: 360,
+  perspective: 1200,
+};
+
+const card = {
+  position: "absolute" as const,
+  width: 260,
+  height: 360,
+  background: "#16161d",
+  borderRadius: 16,
+  padding: 24,
+  border: "1px solid #222",
+  transition: "all 0.45s ease",
+};
+
+const arrow = {
+  fontSize: 36,
+  background: "transparent",
+  border: "none",
+  color: "white",
   cursor: "pointer",
 };
