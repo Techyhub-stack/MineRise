@@ -20,7 +20,7 @@ export default function Home() {
     setIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
   }
 
-  // 🔁 Auto slide
+ 
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
@@ -31,14 +31,14 @@ export default function Home() {
 
   return (
     <main style={bg}>
-      {/* Top CTA */}
+     
       <header style={header}>
         <Link href="/products" style={cta}>
           View Store
         </Link>
       </header>
 
-      {/* Title */}
+    
       <div style={{ textAlign: "center", marginBottom: 60 }}>
         <h1 style={{ fontSize: 56, marginBottom: 12 }}>MineRise Store</h1>
         <p style={{ fontSize: 18, opacity: 0.85 }}>
@@ -46,7 +46,7 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Carousel */}
+      
       <div style={carousel}>
         <button onClick={prev} style={arrow}>‹</button>
 
@@ -86,7 +86,7 @@ export default function Home() {
   );
 }
 
-/* ================= STYLES ================= */
+/* style are here >*/
 
 const bg = {
   minHeight: "100vh",
@@ -135,7 +135,9 @@ const card = {
   padding: 24,
   border: "1px solid #222",
   transition: "all 0.45s ease",
+  cursor: "pointer",        
 };
+
 
 const arrow = {
   fontSize: 32,
