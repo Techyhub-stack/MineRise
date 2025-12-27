@@ -5,13 +5,12 @@ import { adminMiddleware } from "../middleware/admin";
 
 const router = Router();
 
-// 🔓 Public: list products
+
 router.get("/", async (_req, res) => {
   const products = await prisma.product.findMany();
   res.json(products);
 });
 
-// 🔐 Protected: create product
 router.post(
   "/",
   authMiddleware,
