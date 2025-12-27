@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 
 /* ================= DATA ================= */
 
@@ -18,19 +18,20 @@ export default function Home() {
   const [index, setIndex] = useState(1);
   const router = useRouter();
   const startX = useRef<number | null>(null);
+  const wheelLock = useRef(false);
 
   const prev = () =>
     setIndex((i) => (i === 0 ? slides.length - 1 : i - 1));
   const next = () =>
     setIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
 
-  // Auto slide
+  /* 🔁 AUTO SLIDE */
   useEffect(() => {
     const interval = setInterval(next, 3500);
     return () => clearInterval(interval);
   }, []);
 
-  // Keyboard
+  /* ⌨️ KEYBOARD */
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") prev();
@@ -40,9 +41,23 @@ export default function Home() {
     return () => window.removeEventListener("keydown", h);
   }, []);
 
-  // Mobile swipe
+  /* 🖱️ MOUSE WHEEL (NEW) */
+  function onWheel(e: React.WheelEvent) {
+    if (wheelLock.current) return;
+
+    if (e.deltaY > 0) next();
+    if (e.deltaY < 0) prev();
+
+    wheelLock.current = true;
+    setTimeout(() => {
+      wheelLock.current = false;
+    }, 500); // throttle
+  }
+
+  /* 📱 MOBILE SWIPE */
   const onTouchStart = (e: React.TouchEvent) =>
     (startX.current = e.touches[0].clientX);
+
   const onTouchEnd = (e: React.TouchEvent) => {
     if (startX.current === null) return;
     const diff = e.changedTouches[0].clientX - startX.current;
@@ -64,6 +79,7 @@ export default function Home() {
           style={carousel}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          onWheel={onWheel}   // 👈 SCROLL WHEEL HERE
         >
           <button onClick={prev} style={arrow}>‹</button>
 
@@ -90,8 +106,8 @@ export default function Home() {
           <h2 style={sectionTitle}>What is MineRise?</h2>
           <p style={sectionText}>
             MineRise is a premium Minecraft server store where players can
-            purchase ranks, gems, and exclusive bundles to enhance gameplay.
-            All purchases are delivered instantly and securely.
+            purchase ranks, gems, and exclusive bundles. All purchases are
+            delivered instantly and securely.
           </p>
         </div>
       </section>
@@ -99,9 +115,9 @@ export default function Home() {
       {/* ================= FEATURES ================= */}
       <section style={layer}>
         <div style={features}>
-          <Feature title="Instant Delivery" text="Items are delivered immediately after purchase." />
-          <Feature title="Secure Payments" text="All transactions are protected and secure." />
-          <Feature title="Exclusive Content" text="Unlock ranks, perks, and special bonuses." />
+          <Feature title="Instant Delivery" text="Items delivered immediately." />
+          <Feature title="Secure Payments" text="Safe and protected checkout." />
+          <Feature title="Exclusive Content" text="Unique perks and bonuses." />
         </div>
       </section>
 
@@ -174,6 +190,7 @@ function TiltCard({
         ...card,
         transform: baseTransform(active, offset),
         filter: active ? "blur(0)" : "blur(2px)",
+        pointerEvents: active ? "auto" : "none", // 👈 IMPORTANT
         boxShadow: active
           ? "0 0 70px rgba(177,18,18,0.75)"
           : "0 20px 40px rgba(0,0,0,0.6)",
@@ -197,10 +214,7 @@ const baseTransform = (active: boolean, offset: number) => `
 
 /* ================= STYLES ================= */
 
-const page = {
-  background: "#0b0b12",
-  color: "white",
-};
+const page = { background: "#0b0b12", color: "white" };
 
 const hero = {
   minHeight: "100vh",
@@ -219,15 +233,10 @@ const hero = {
 const heroTitle = {
   fontSize: 60,
   fontWeight: 900,
-  letterSpacing: "1px",
   textShadow: "0 0 30px rgba(177,18,18,0.6)",
 };
 
-const heroSubtitle = {
-  fontSize: 18,
-  color: "#d1d5db",
-  marginBottom: 50,
-};
+const heroSubtitle = { fontSize: 18, color: "#d1d5db", marginBottom: 50 };
 
 const carousel = {
   display: "flex",
@@ -284,15 +293,8 @@ const section = {
   textAlign: "center" as const,
 };
 
-const sectionTitle = {
-  fontSize: 36,
-  marginBottom: 16,
-};
-
-const sectionText = {
-  fontSize: 18,
-  opacity: 0.85,
-};
+const sectionTitle = { fontSize: 36, marginBottom: 16 };
+const sectionText = { fontSize: 18, opacity: 0.85 };
 
 const features = {
   display: "grid",
