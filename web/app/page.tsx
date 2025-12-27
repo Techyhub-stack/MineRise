@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/Footer";
 
 /* ================= DATA ================= */
 
@@ -26,7 +27,7 @@ export default function Home() {
     setIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
   }
 
-  // Auto slide
+  // Auto-slide
   useEffect(() => {
     const interval = setInterval(next, 3500);
     return () => clearInterval(interval);
@@ -78,7 +79,7 @@ export default function Home() {
                 desc={s.desc}
                 active={i === index}
                 offset={i - index}
-                onClick={() => router.push("/products")}
+                onClick={() => router.push("/products?from=hero")}
               />
             ))}
           </div>
@@ -88,38 +89,29 @@ export default function Home() {
       </section>
 
       {/* ================= INFO ================= */}
-      <section style={section}>
+      <section className="fade-up" style={section}>
         <h2 style={sectionTitle}>What is MineRise?</h2>
         <p style={sectionText}>
           MineRise is a premium Minecraft server store where players can purchase
-          ranks, gems, and exclusive bundles to enhance their gameplay
-          experience. All purchases are delivered instantly and securely.
+          ranks, gems, and exclusive bundles to enhance gameplay. All purchases
+          are delivered instantly and securely.
         </p>
       </section>
 
       {/* ================= FEATURES ================= */}
-      <section style={features}>
-        <Feature
-          title="Instant Delivery"
-          text="Items are delivered immediately after purchase."
-        />
-        <Feature
-          title="Secure Payments"
-          text="Transactions are handled safely and securely."
-        />
-        <Feature
-          title="Exclusive Content"
-          text="Unlock ranks, perks, and special bonuses."
-        />
+      <section className="fade-up" style={features}>
+        <Feature title="Instant Delivery" text="Items are delivered immediately after purchase." />
+        <Feature title="Secure Payments" text="All transactions are handled safely." />
+        <Feature title="Exclusive Content" text="Unlock special ranks, perks, and bonuses." />
       </section>
 
       {/* ================= CTA ================= */}
-      <section style={ctaSection}>
+      <section className="fade-up" style={ctaSection}>
         <h2 style={{ fontSize: 36, marginBottom: 10 }}>
           Ready to upgrade your gameplay?
         </h2>
         <p style={{ opacity: 0.85, marginBottom: 30 }}>
-          Visit the store and unlock premium features today.
+          Explore the store and unlock premium features today.
         </p>
         <button
           style={ctaButton}
@@ -128,6 +120,8 @@ export default function Home() {
           Go to Store
         </button>
       </section>
+
+      <Footer />
     </main>
   );
 }
@@ -216,8 +210,7 @@ const bg = {
 
 const hero = {
   minHeight: "100vh",
-  background:
-    "radial-gradient(circle at top, #5b0f9b, #0b0b12 65%)",
+  background: "radial-gradient(circle at top, #5b0f9b, #0b0b12 65%)",
   display: "flex",
   flexDirection: "column" as const,
   alignItems: "center",
@@ -225,29 +218,11 @@ const hero = {
   paddingBottom: 120,
 };
 
-const heroTitle = {
-  fontSize: 56,
-  marginBottom: 12,
-};
+const heroTitle = { fontSize: 56, marginBottom: 12 };
+const heroSubtitle = { fontSize: 18, opacity: 0.85, marginBottom: 50 };
 
-const heroSubtitle = {
-  fontSize: 18,
-  opacity: 0.85,
-  marginBottom: 50,
-};
-
-const carousel = {
-  display: "flex",
-  alignItems: "center",
-  gap: 40,
-};
-
-const track = {
-  position: "relative" as const,
-  width: 280,
-  height: 360,
-  perspective: 1200,
-};
+const carousel = { display: "flex", alignItems: "center", gap: 40 };
+const track = { position: "relative" as const, width: 280, height: 360, perspective: 1200 };
 
 const card = {
   position: "absolute" as const,
@@ -264,8 +239,7 @@ const card = {
 const glow = {
   position: "absolute" as const,
   inset: -20,
-  background:
-    "radial-gradient(circle, rgba(168,85,247,0.25), transparent 60%)",
+  background: "radial-gradient(circle, rgba(168,85,247,0.25), transparent 60%)",
   zIndex: -1,
 };
 
@@ -286,15 +260,8 @@ const section = {
   textAlign: "center" as const,
 };
 
-const sectionTitle = {
-  fontSize: 36,
-  marginBottom: 16,
-};
-
-const sectionText = {
-  fontSize: 18,
-  opacity: 0.85,
-};
+const sectionTitle = { fontSize: 36, marginBottom: 16 };
+const sectionText = { fontSize: 18, opacity: 0.85 };
 
 const features = {
   display: "grid",
@@ -314,8 +281,7 @@ const featureCard = {
 const ctaSection = {
   textAlign: "center" as const,
   padding: "120px 20px",
-  background:
-    "radial-gradient(circle at center, rgba(168,85,247,0.15), transparent 70%)",
+  background: "radial-gradient(circle at center, rgba(168,85,247,0.15), transparent 70%)",
 };
 
 const ctaButton = {
