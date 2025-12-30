@@ -41,16 +41,20 @@ export default function Home() {
 
 
   function onWheel(e: React.WheelEvent) {
-    if (wheelLock.current) return;
+  e.preventDefault();      
+  e.stopPropagation();     
 
-    if (e.deltaY > 0) next();
-    if (e.deltaY < 0) prev();
+  if (wheelLock.current) return;
 
-    wheelLock.current = true;
-    setTimeout(() => {
-      wheelLock.current = false;
-    }, 500); // throttle
-  }
+  if (e.deltaY > 0) next();
+  if (e.deltaY < 0) prev();
+
+  wheelLock.current = true;
+  setTimeout(() => {
+    wheelLock.current = false;
+  }, 500);
+}
+
 
   
   const onTouchStart = (e: React.TouchEvent) =>
