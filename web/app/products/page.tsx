@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCart } from "@/context/CartContext";
 
 type Product = {
   id: number;
@@ -11,6 +12,7 @@ type Product = {
 };
 
 export default function Products() {
+  const { addItem } = useCart();
   const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -83,11 +85,19 @@ export default function Products() {
                 <p style={{ opacity: 0.8 }}>{p.description}</p>
                 <h3 style={price}>{formatPrice(p.price)}</h3>
                 <button
-                  style={button}
-                  onClick={() => router.push(`/products/${p.id}`)}
-                >
-                  View Product
-                </button>
+  style={button}
+  onClick={() =>
+    addItem({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      quantity: 1,
+    })
+  }
+>
+  Add to Cart
+</button>
+
               </div>
             ))}
         </div>
