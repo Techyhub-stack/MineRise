@@ -10,6 +10,19 @@ const slides = [
   { title: "Bundles", desc: "Best value combined packages" },
 ];
 
+const stats = [
+  { label: "Players Online", value: "2,431" },
+  { label: "Total Players", value: "128K+" },
+  { label: "Products Sold", value: "54K+" },
+  { label: "Uptime", value: "99.9%" },
+];
+
+const highlights = [
+  { title: "Instant Delivery", text: "Items delivered immediately after purchase." },
+  { title: "Secure Payments", text: "Protected transactions with trusted providers." },
+  { title: "Always Available", text: "Store open 24/7 worldwide." },
+];
+
 export default function Home() {
   const [index, setIndex] = useState(1);
   const [hovering, setHovering] = useState(false);
@@ -64,14 +77,37 @@ export default function Home() {
 
           <div style={track}>
             {slides.map((s, i) => (
-              <Card
+              <div
                 key={i}
-                title={s.title}
-                desc={s.desc}
-                offset={i - index}
-                active={i === index}
-                onButtonClick={() => router.push("/products")}
-              />
+                style={{
+                  ...card,
+                  transform: `
+                    translateX(${(i - index) * 320}px)
+                    scale(${i === index ? 1.1 : 0.85})
+                    rotateY(${(i - index) * -20}deg)
+                  `,
+                  opacity: i === index ? 1 : 0.6,
+                  filter: i === index ? "blur(0)" : "blur(2px)",
+                  pointerEvents: i === index ? "auto" : "none",
+                  zIndex: i === index ? 3 : 1,
+                  boxShadow:
+                    i === index
+                      ? "0 0 70px rgba(177,18,18,0.75)"
+                      : "0 20px 40px rgba(0,0,0,0.6)",
+                }}
+              >
+                <h2>{s.title}</h2>
+                <p style={{ opacity: 0.8 }}>{s.desc}</p>
+                {i === index && (
+                  <button
+                    style={cardButton}
+                    onClick={() => router.push("/products")}
+                  >
+                    View in Store
+                  </button>
+                )}
+                {i === index && <div style={glow} />}
+              </div>
             ))}
           </div>
 
@@ -79,51 +115,26 @@ export default function Home() {
         </div>
       </section>
 
+      <section style={statsSection}>
+        {stats.map((s, i) => (
+          <div key={i} style={statCard}>
+            <h2 style={statValue}>{s.value}</h2>
+            <p style={statLabel}>{s.label}</p>
+          </div>
+        ))}
+      </section>
+
+      <section style={highlightsSection}>
+        {highlights.map((h, i) => (
+          <div key={i} style={highlightCard}>
+            <h3>{h.title}</h3>
+            <p style={{ opacity: 0.8 }}>{h.text}</p>
+          </div>
+        ))}
+      </section>
+
       <Footer />
     </main>
-  );
-}
-
-function Card({
-  title,
-  desc,
-  offset,
-  active,
-  onButtonClick,
-}: {
-  title: string;
-  desc: string;
-  offset: number;
-  active: boolean;
-  onButtonClick: () => void;
-}) {
-  return (
-    <div
-      style={{
-        ...card,
-        transform: `
-          translateX(${offset * 320}px)
-          scale(${active ? 1.1 : 0.85})
-          rotateY(${offset * -20}deg)
-        `,
-        opacity: active ? 1 : 0.6,
-        filter: active ? "blur(0)" : "blur(2px)",
-        pointerEvents: active ? "auto" : "none",
-        zIndex: active ? 3 : 1,
-        boxShadow: active
-          ? "0 0 70px rgba(177,18,18,0.75)"
-          : "0 20px 40px rgba(0,0,0,0.6)",
-      }}
-    >
-      <h2>{title}</h2>
-      <p style={{ opacity: 0.8 }}>{desc}</p>
-      {active && (
-        <button style={cardButton} onClick={onButtonClick}>
-          View in Store
-        </button>
-      )}
-      {active && <div style={glow} />}
-    </div>
   );
 }
 
@@ -210,4 +221,47 @@ const arrow = {
   border: "1px solid #333",
   color: "white",
   cursor: "pointer",
+};
+
+const statsSection = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gap: 24,
+  maxWidth: 1000,
+  margin: "120px auto 0",
+  padding: "0 20px",
+};
+
+const statCard = {
+  background: "#141419",
+  borderRadius: 14,
+  padding: 24,
+  textAlign: "center" as const,
+  border: "1px solid rgba(255,255,255,0.06)",
+};
+
+const statValue = {
+  fontSize: 36,
+  fontWeight: 900,
+  color: "#22c55e",
+};
+
+const statLabel = {
+  opacity: 0.8,
+};
+
+const highlightsSection = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  gap: 24,
+  maxWidth: 1100,
+  margin: "120px auto",
+  padding: "0 20px",
+};
+
+const highlightCard = {
+  background: "#141419",
+  borderRadius: 14,
+  padding: 28,
+  border: "1px solid rgba(255,255,255,0.06)",
 };
