@@ -10,27 +10,26 @@ type Product = {
   price: number;
 };
 
-function getUserCurrency() {
-  const locale = navigator.language || "en-US";
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: "USD",
-  }).resolvedOptions().currency;
-}
-
 export default function Products() {
   const router = useRouter();
 
   const [products, setProducts] = useState<Product[]>([]);
+  const [currency, setCurrency] = useState("USD");
   const [rates, setRates] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const currency = getUserCurrency();
 
   useEffect(() => {
     fetch("http://localhost:5000/products")
       .then((res) => res.json())
       .then(setProducts);
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/location")
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrency(data.currency || "USD");
+      });
   }, []);
 
   useEffect(() => {
@@ -40,19 +39,24 @@ export default function Products() {
       .finally(() => setLoading(false));
   }, []);
 
-  function formatPrice(usd: number) {
-    if (!rates || !rates[currency]) {
-      return `$${usd.toFixed(2)}`;
-    }
-
-    const converted = usd * rates[currency];
-
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency,
-    }).format(converted);
+  function formatPrice(usd: number): string {
+  if (typeof usd !== "number") {
+    return "";
   }
 
+  if (!rates || typeof rates !== "object") {
+    return `${usd.toFixed(2)}`;
+  }
+
+  const rate = typeof rates[currency] === "number" ? rates[currency] : 1;
+  const converted = usd * rate;
+
+  return new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: currency || "USD",
+    maximumFractionDigits: 2,
+  }).format(converted);
+}
   return (
     <main style={page}>
       <section style={header}>

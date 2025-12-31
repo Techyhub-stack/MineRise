@@ -1,3 +1,4 @@
+import currencyRoute from "./routes/currency";
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -5,8 +6,8 @@ import authRoutes from "./routes/auth";
 import { authMiddleware, AuthRequest } from "./middleware/auth";
 import productRoutes from "./routes/products";
 import statsRoute from "./routes/stats";
-import currencyRoute from "./routes/currency";
 import locationRoute from "./routes/location";
+
 
 const app = express();
 app.use(cors());
