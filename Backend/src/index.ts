@@ -4,9 +4,9 @@ import cors from "cors";
 import authRoutes from "./routes/auth";
 import { authMiddleware, AuthRequest } from "./middleware/auth";
 import productRoutes from "./routes/products";
+import statsRoute from "./routes/stats";
 
-
-
+app.use("/stats", statsRoute);
 const app = express();
 app.use(cors());
 app.use(express.json());
