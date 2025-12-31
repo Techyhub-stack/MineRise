@@ -5,7 +5,8 @@ import authRoutes from "./routes/auth";
 import { authMiddleware, AuthRequest } from "./middleware/auth";
 import productRoutes from "./routes/products";
 import statsRoute from "./routes/stats";
-
+import currencyRoute from "./routes/currency";
+import locationRoute from "./routes/location";
 
 const app = express();
 app.use(cors());
@@ -31,4 +32,5 @@ app.get("/profile", authMiddleware, (req: AuthRequest, res) => {
 app.use("/products", productRoutes);
 
 app.use("/stats", statsRoute);
+app.use("/location", locationRoute);
 

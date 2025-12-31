@@ -3,6 +3,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+type Product = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+};
+
 function getUserCurrency() {
   const locale = navigator.language || "en-US";
   return new Intl.NumberFormat(locale, {
@@ -11,25 +18,40 @@ function getUserCurrency() {
   }).resolvedOptions().currency;
 }
 
-type Product = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-};
-
 export default function Products() {
   const router = useRouter();
+
   const [products, setProducts] = useState<Product[]>([]);
+  const [rates, setRates] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(true);
+
   const currency = getUserCurrency();
 
   useEffect(() => {
     fetch("http://localhost:5000/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then(setProducts);
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/currency")
+      .then((res) => res.json())
+      .then(setRates)
       .finally(() => setLoading(false));
   }, []);
+
+  function formatPrice(usd: number) {
+    if (!rates || !rates[currency]) {
+      return `$${usd.toFixed(2)}`;
+    }
+
+    const converted = usd * rates[currency];
+
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency,
+    }).format(converted);
+  }
 
   return (
     <main style={page}>
@@ -47,7 +69,7 @@ export default function Products() {
               <div key={p.id} style={card}>
                 <h2>{p.name}</h2>
                 <p style={{ opacity: 0.8 }}>{p.description}</p>
-                <h3 style={price}>${p.price.toFixed(2)}</h3>
+                <h3 style={price}>{formatPrice(p.price)}</h3>
                 <button
                   style={button}
                   onClick={() => router.push(`/products/${p.id}`)}
