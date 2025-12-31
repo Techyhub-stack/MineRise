@@ -16,11 +16,12 @@ const slides = [
 ];
 
 const stats = [
-  { label: "Players Online", value: "2,431" },
-  { label: "Total Players", value: "128K+" },
+  { label: "Players Online", value: serverStats.online.toString() },
+  { label: "Total Slots", value: serverStats.max.toString() },
   { label: "Products Sold", value: "54K+" },
   { label: "Uptime", value: "99.9%" },
 ];
+
 
 const highlights = [
   { title: "Instant Delivery", text: "Items delivered immediately after purchase." },
