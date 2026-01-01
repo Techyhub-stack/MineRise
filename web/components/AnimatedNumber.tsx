@@ -1,20 +1,23 @@
 "use client";
 
-import { motion, animate } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { animate } from "framer-motion";
 
 export default function AnimatedNumber({
   value,
-  duration = 0.8,
+  duration = 0.6,
 }: {
   value: number;
   duration?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [prev, setPrev] = useState(value);
 
   useEffect(() => {
-    const controls = animate(prev, value, {
+    if (!ref.current) return;
+
+    const start = Number(ref.current.textContent) || 0;
+
+    const controls = animate(start, value, {
       duration,
       ease: "easeOut",
       onUpdate(latest) {
@@ -24,7 +27,6 @@ export default function AnimatedNumber({
       },
     });
 
-    setPrev(value);
     return () => controls.stop();
   }, [value]);
 

@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import footer from "@/components/footer";
 import SneakPeek from "@/components/SneakPeek";
-import ServerStatus from "@/components/ServerStatus";
-import ServerStatusPanel from "@/components/ServerStatusPanel";
+import AnimatedNumber from "@/components/AnimatedNumber";
+
 
 
 const slides = [
@@ -124,15 +124,18 @@ export default function Home() {
       </section>
        
        <SneakPeek />
-     <ServerStatus />
 
       <section style={statsSection}>
         <div style={statCard}>
-          <h2 style={statValue}>{serverStats.online}</h2>
+          <h2 style={statValue}>
+  <AnimatedNumber value={serverStats.online} />
+         </h2>
           <p style={statLabel}>Players Online</p>
         </div>
         <div style={statCard}>
-          <h2 style={statValue}>{serverStats.max}</h2>
+          <h2 style={statValue}>
+  <AnimatedNumber value={serverStats.max} />
+        </h2>
           <p style={statLabel}>Max Slots</p>
         </div>
         <div style={statCard}>
