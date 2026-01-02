@@ -56,28 +56,25 @@ export default function Home() {
 
   return (
     <>
-      {/* VIDEO BACKGROUND */}
       <video autoPlay loop muted playsInline style={videoBg}>
         <source src="/bg.mp4" type="video/mp4" />
       </video>
+
       <div style={videoOverlay} />
 
       <main style={page}>
-        {/* HERO */}
         <section style={hero}>
           <h1 style={heroTitle}>MineRise Store</h1>
           <p style={heroSubtitle}>
             Premium ranks, gems & perks for our Minecraft server
           </p>
 
-          {/* CAROUSEL */}
           <div
             style={carousel}
             onWheelCapture={onWheel}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
           >
-            {/* LEFT ARROW */}
             <button onClick={prev} style={{ ...arrow, left: -70 }}>
               ‹
             </button>
@@ -130,17 +127,14 @@ export default function Home() {
               })}
             </div>
 
-            {/* RIGHT ARROW */}
             <button onClick={next} style={{ ...arrow, right: -70 }}>
               ›
             </button>
           </div>
         </section>
 
-        {/* SNEAK PEEK */}
         <SneakPeek />
 
-        {/* STATS */}
         <section style={statsSection}>
           <div style={statCard}>
             <h2 style={statValue}>
@@ -172,8 +166,6 @@ export default function Home() {
     </>
   );
 }
-
-/* ================= STYLES ================= */
 
 const videoBg = {
   position: "fixed" as const,
@@ -224,7 +216,7 @@ const track = {
   justifyContent: "center",
   alignItems: "center",
   perspective: 1200,
-  pointerEvents: "none", // ⬅ IMPORTANT
+  pointerEvents: "none",
 };
 
 const card = {
@@ -253,7 +245,7 @@ const cardButton = {
 
 const arrow = {
   position: "absolute" as const,
-  zIndex: 10, // ⬅ ABOVE EVERYTHING
+  zIndex: 10,
   top: "50%",
   transform: "translateY(-50%)",
   fontSize: 32,
