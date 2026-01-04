@@ -56,7 +56,7 @@ export default function Home() {
 
   return (
     <>
-      <video autoPlay loop muted playsInline style={videoBg}>
+      <video autoPlay loop muted playsInline style={videoBg as React.CSSProperties}>
         <source src="/bg.mp4" type="video/mp4" />
       </video>
 
@@ -79,7 +79,7 @@ export default function Home() {
               ‹
             </button>
 
-            <div style={track}>
+            <div style={track as React.CSSProperties}>
               {slides.map((s, i) => {
                 const offset = i - index;
 
