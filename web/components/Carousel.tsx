@@ -11,6 +11,7 @@ const slides = [
 ];
 
 const CARD_WIDTH = 320;
+const TRACK_WIDTH = 960;
 
 export default function Carousel() {
   const [index, setIndex] = useState(1);
@@ -55,19 +56,30 @@ export default function Carousel() {
               key={i}
               animate={{
                 x: offset * CARD_WIDTH,
-                scale: offset === 0 ? 1.1 : 0.85,
+                scale: offset === 0 ? 1.12 : 0.85,
+                rotateY: offset * -18,
                 opacity: offset === 0 ? 1 : 0.5,
+                filter: offset === 0 ? "blur(0px)" : "blur(2px)",
               }}
-              transition={{ type: "spring", stiffness: 260, damping: 30 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 30,
+              }}
               style={{
                 ...card,
                 pointerEvents: offset === 0 ? "auto" : "none",
+                zIndex: offset === 0 ? 3 : 1,
               }}
             >
               <h2>{s.title}</h2>
-              <p>{s.desc}</p>
+              <p style={{ opacity: 0.8 }}>{s.desc}</p>
+
               {offset === 0 && (
-                <button onClick={() => router.push("/products")}>
+                <button
+                  style={cardButton}
+                  onClick={() => router.push("/products")}
+                >
                   View in Store
                 </button>
               )}
@@ -81,6 +93,8 @@ export default function Carousel() {
   );
 }
 
+/* STYLES */
+
 const carousel: CSSProperties = {
   position: "relative",
   display: "flex",
@@ -90,8 +104,13 @@ const carousel: CSSProperties = {
 
 const track: CSSProperties = {
   position: "relative",
-  width: CARD_WIDTH,
-  height: 360,
+  width: TRACK_WIDTH,
+  height: 380,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  perspective: 1200,
+  overflow: "visible",
 };
 
 const card: CSSProperties = {
@@ -99,19 +118,36 @@ const card: CSSProperties = {
   left: "50%",
   transform: "translateX(-50%)",
   width: 280,
-  height: 340,
-  background: "#141419",
+  height: 360,
+  background: "rgba(20,20,25,0.92)",
   borderRadius: 16,
   padding: 24,
+  border: "1px solid rgba(255,255,255,0.1)",
+  boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+};
+
+const cardButton: CSSProperties = {
+  marginTop: 20,
+  background: "linear-gradient(90deg,#b11212,#22c55e)",
+  border: "none",
+  padding: "10px 16px",
+  borderRadius: 8,
+  color: "white",
+  fontWeight: 700,
+  cursor: "pointer",
 };
 
 const arrow: CSSProperties = {
   position: "absolute",
+  zIndex: 10,
   top: "50%",
   transform: "translateY(-50%)",
   fontSize: 32,
-  background: "transparent",
+  width: 48,
+  height: 48,
+  borderRadius: "50%",
+  background: "rgba(255,255,255,0.12)",
+  border: "1px solid rgba(255,255,255,0.25)",
   color: "white",
-  border: "none",
   cursor: "pointer",
 };
