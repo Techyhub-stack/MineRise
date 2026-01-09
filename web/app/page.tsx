@@ -3,8 +3,6 @@
 import Carousel from "@/components/Carousel";
 import ServerStats from "@/components/ServerStats";
 import SneakPeek from "@/components/SneakPeek";
-import Features from "@/components/Features";
-import CTA from "@/components/CTA";
 import Footer from "@/components/footer";
 
 export default function Home() {
@@ -22,15 +20,10 @@ export default function Home() {
           <p style={subtitle}>
             Premium ranks, gems & perks for our Minecraft server
           </p>
-
           <Carousel />
         </section>
-
         <ServerStats />
         <SneakPeek />
-        <Features />
-        <CTA />
-
         <Footer />
       </main>
     </>
